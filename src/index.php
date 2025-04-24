@@ -7,6 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $query = $_GET['q'] ?? '';
 
+    if (!$query) {
+        echo json_encode(['error' => 'Search query is missing']);
+        exit;
+    }
 
     $response = [
         'status' => 'success',
