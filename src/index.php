@@ -4,9 +4,13 @@
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+    $query = $_GET['q'] ?? '';
+
+
     $response = [
         'status' => 'success',
-        'message' => 'This will soon be a github search proxy :)',
+        'message' => 'This will soon be a github search proxy result with the name '.$query,
     ];
     echo json_encode($response);
 } else {
