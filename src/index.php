@@ -6,6 +6,7 @@ header('Content-Type: application/json; charset=utf-8');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $name = $_GET['q'] ?? '';
+    $page = $_GET['page'] ?? 1;
 
     if (!$name) {
         echo json_encode(['error' => 'Search query is missing']);
@@ -14,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $token = getenv('GITHUB_TOKEN');
 
-    $url = 'https://api.github.com/search/users?q=' . urlencode($name).'&per_page=100';
+    $url = 'https://api.github.com/search/users?q=' . urlencode($name).'&per_page=100&page='.intval($page);
 
     $curlHandle =  curl_init($url);
     curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
