@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $token = getenv('GITHUB_TOKEN');
 
-    $url = 'https://api.github.com/search/users?q=' . urlencode($name);
+    $url = 'https://api.github.com/search/users?q=' . urlencode($name).'&per_page=100';
 
     $curlHandle =  curl_init($url);
     curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -33,7 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode(['error' => $error]);
     }
     else {
-        echo json_encode($response);
+        $data = json_decode($response, true);
+
+        $usernames = array_map(fn($user) => $user['login'], $data['items']);
+
+        echo json_encode([
+            'query' => "Searched for ".$name,
+            'usernames' => $usernames
+        ]);
     }
 } else {
     http_response_code(405);
